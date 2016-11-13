@@ -9,7 +9,7 @@ const Info=()=>{
 			<p>按p开始或者暂停游戏</p>
 			<p>由react,redux开发</p>
 			<p>ctrl+h隐藏右侧开发工具</p>
-			<p><a href="https://github.com/gwl002/reactSnake.git" target="_blank">github地址</a></p>
+			<p><a href="https://github.com/gwl002/react-snake.git" target="_blank">github地址</a></p>
 		</div>
 	)
 }
