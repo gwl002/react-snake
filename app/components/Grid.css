@@ -1,0 +1,15 @@
+.cell{
+	display:inline-block;
+	width:19px;
+	height:19px;
+	box-sizing: border-box;
+	border:1px solid #999;
+	margin:0px 1px 1px 0px;
+}
+
+.grid{
+	box-sizing: border-box;
+	width:400px;
+	height:400px;
+	font-size:0;
+}

@@ -1,0 +1,15 @@
+.info{
+	color:#fff;
+	font:28px/1.41 Arial "Microsoft Yahei" ;
+	position:absolute;
+	top:50px;
+	right:-280px;
+}
+
+.info p{
+	padding:10px;
+}
+.info a{
+	text-decoration: none;
+	color:#292CCB;
+}

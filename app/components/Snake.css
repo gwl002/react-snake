@@ -1,0 +1,22 @@
+.snake{
+	width:400px;
+	height:400px;
+	position:relative;
+}
+
+.snake-body,.snake-food{
+	display:inline-block;
+	width:19px;
+	height:19px;
+	box-sizing: border-box;
+	margin:0px 1px 1px 0px;
+	position:absolute;
+}
+
+.snake-body{
+	background-color:#5A5EB9;
+}
+
+.snake-food{
+	background-color: #DE2FA7;
+}
