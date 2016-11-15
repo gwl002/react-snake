@@ -1,17 +1,30 @@
 import React,{PropTypes} from "react"
 import "./Grid.css"
 
-const Grid=({cols,rows})=>{
-	let gridArr=[];
-	for(let i=0;i<cols*rows;i++){
-		gridArr.push(<span className="cell" key={i} ></span>)
+class Grid extends React.Component{
+	constructor(props){
+		super(props);
 	}
-	return (
-		<div className="grid">
-			{gridArr}
-		</div>
-	)
+
+	shouldComponentUpdate(){
+		return false;
+	}
+
+	render(){
+		let gridArr=[];
+		let cols=this.props.cols;
+		let rows=this.props.rows;
+		for(let i=0;i<cols*rows;i++){
+			gridArr.push(<span className="cell" key={i} ></span>)
+		}
+		return (
+			<div className="grid">
+				{gridArr}
+			</div>
+		)
+	}
 }
+
 Grid.propTypes={
 	cols:PropTypes.number.isRequired,
 	rows:PropTypes.number.isRequired,

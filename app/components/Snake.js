@@ -29,15 +29,15 @@ const Snake=React.createClass({
 				if(!this.props.gameover){
 					if(this.props.moving){
 						this.props.toggleMove();
-						clearInterval(this.timer)
+						clearInterval(this.timer);
 					}else{
 						this.props.toggleMove();
-						this.timer=setInterval(this.props.move,this.props.speed)
+						this.timer=setInterval(this.props.move,this.props.speed);
 					}
 				}
 				break;
 			case 82: 
-				if(this.timer ){
+				if(this.timer!==undefined){
 					clearInterval(this.timer);
 				}
 				this.props.reStart();
@@ -51,11 +51,18 @@ const Snake=React.createClass({
 		window.addEventListener("keydown",this.handleKeyDown);
 	},
 
+	componentDidUpdate:function(){
+		console.log("snake UPDATE!")
+	},
+	
 	shouldComponentUpdate:function(nextProps,nextState){
 		let snakeArr=nextProps.snakeArr;
 		let snakeBody=snakeArr.slice(0,snakeArr.length-1);
 		let head=snakeArr[snakeArr.length-1];
 		let eatSelf=snakeBody.filter((item)=>{return item.x==head.x&&item.y==head.y}).length>0?true:false
+		// if(nextProps.gameover){
+		// 	return false;
+		// }
 		if(head.x>19||head.x<0||head.y>19||head.y<0||eatSelf){
 			clearInterval(this.timer);
 			this.props.becomeGameover();
@@ -77,11 +84,11 @@ const Snake=React.createClass({
 		return  (
 			<div className="snake" >
 				<Grid cols={20} rows={20} />
-				{this.props.snakeArr.map((pos,index)=>(
-					<span className="snake-body" key={"body"+index} style={{left:pos.x*20,top:pos.y*20}}></span>
+				{this.props.snakeArr.map((pos)=>(
+					<span className="snake-body" key={pos.x+"-"+pos.y} style={{left:pos.x*20,top:pos.y*20}}></span>
 					))}
 				{this.props.foodArr.map((pos,index)=>(
-					<span className="snake-food" key={"food"+index} style={{left:pos.x*20,top:pos.y*20}}></span>
+					<span className="snake-food" key={index} style={{left:pos.x*20,top:pos.y*20}}></span>
 					))}
 			</div>
 		)

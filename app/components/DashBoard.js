@@ -4,7 +4,7 @@ import "./DashBoard.css"
 const DashBoard=React.createClass({
 	handleChange:function(e){
 		e.target.blur();//使select失去焦点，否则会跟随按键改变select值
-		this.props.changeSpeed(e.target.value);
+		this.props.changeSpeed(parseInt(e.target.value));
 	},
 
 	render:function(){
