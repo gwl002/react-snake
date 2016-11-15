@@ -84,9 +84,11 @@ const Snake=React.createClass({
 		return  (
 			<div className="snake" >
 				<Grid cols={20} rows={20} />
-				{this.props.snakeArr.map((pos)=>(
+				<div>
+				{this.props.snakeArr.map((pos,index)=>(
 					<span className="snake-body" key={pos.x+"-"+pos.y} style={{left:pos.x*20,top:pos.y*20}}></span>
 					))}
+				</div>
 				{this.props.foodArr.map((pos,index)=>(
 					<span className="snake-food" key={index} style={{left:pos.x*20,top:pos.y*20}}></span>
 					))}
