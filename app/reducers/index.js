@@ -1,41 +1,47 @@
-let initialState={
+import {Map,List,fromJS,is} from "immutable"
+
+let initialState=fromJS({
 	snakeArr:[{x:1,y:1},{x:1,y:2},{x:1,y:3}],
-	foodArr:[{x:5,y:6}],
+	foodArr:{x:5,y:6},
 	direction:"RIGHT",
 	moving:false,
 	speed:200,
 	score:0,
 	gameover:false
-}
+})
 
-const move=({snakeArr,direction,foodArr,score})=>{
-	let len=snakeArr.length;
-	let last=snakeArr[len-1];
-	let arr=snakeArr.slice(1,len);
-	let food=foodArr[0];
+const move=(state)=>{
+	let food=state.get("foodArr");
+	let snakeArr=state.get("snakeArr");
+	let last=snakeArr.last();
+	let score=state.get("score");
 	let next;
-	switch(direction){
+	switch(state.get("direction")){
 		case "RIGHT":
-			next={x:last.x+1,y:last.y}
+			next=Map({x:last.get("x")+1,y:last.get("y")})
 			break;
 		case "LEFT":
-			next={x:last.x-1,y:last.y}
+			next=Map({x:last.get("x")-1,y:last.get("y")})
 			break;
 		case "UP":
-			next={x:last.x,y:last.y-1}
+			next=Map({x:last.get("x"),y:last.get("y")-1})
 			break;
 		case "DOWN":
-			next={x:last.x,y:last.y+1}
+			next=Map({x:last.get("x"),y:last.get("y")+1})
 			break;
 		default:
 			break;
 	}
-	if(food.x==next.x&&food.y==next.y){
-		return {snakeArr:[...snakeArr,next],foodArr:foodRnd(snakeArr),score:score+1}
+	if(is(next,food)){
+		// let obj={snakeArr:snakeArr.push(next),score:score+1,foodArr:foodRnd(snakeArr)}
+		return state.withMutations(state=>{
+			state.update("score",score=>score+1)
+				 .update("snakeArr",list=>list.push(next))
+				 .set("foodArr",Map(foodRnd(snakeArr)))
+		});
 	}else{
-		return {snakeArr:[...arr,next],foodArr:foodArr}
+		return state.update("snakeArr",list=>list.skip(1).push(next))
 	}
-
 }
 
 //判断坐标是否重合
@@ -43,7 +49,6 @@ const inArr=(arr,x,y)=>(
 	 arr.filter(item=>{return item.x===x&&item.y===y}).length>0?true:false
 )
 
-//随机食物位置
 const foodRnd=(snakeArr)=>{
 	let x=Math.floor(Math.random()*20);
 	let y=Math.floor(Math.random()*20);
@@ -51,23 +56,24 @@ const foodRnd=(snakeArr)=>{
 		x=Math.floor(Math.random()*20);
 		y=Math.floor(Math.random()*20);
 	}
-	return [{x,y}]
+	return {x,y}
 }
+
 
 const game=(state=initialState,action)=>{
 	switch(action.type){
 		case "TOGGLE_MOVE":
-			return Object.assign({},state,{moving:!state.moving})
+			return state.update("moving",m=>!m);
 		case "CHANGE_SPEED":
-			return Object.assign({},state,{speed:action.speed})
+			return state.set("speed",action.speed);
 		case "CHANGE_DIR":
-			return Object.assign({},state,{direction:action.direction})
+			return state.set("direction",action.direction);
 		case "MOVE_FORWARD":
-			return Object.assign({},state,move(state))
+			return move(state);
 		case "RESTART":
-			return Object.assign({},initialState)
+			return state.merge(initialState);
 		case "BECOME_GAMEOVER":
-			return Object.assign({},state,{gameover:true})
+			return state.set("gameover",true);
 		default:
 			return state
 	}

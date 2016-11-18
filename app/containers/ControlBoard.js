@@ -4,10 +4,10 @@ import {changeSpeed} from "../actions/index"
 
 const mapStateToProps=(state)=>{
 	return {
-		speed:state.speed,
-		score:state.score,
-		gameover:state.gameover,
-		moving:state.moving
+		speed:state.get("speed"),
+		score:state.get("score"),
+		gameover:state.get("gameover"),
+		moving:state.get("moving")
 	}
 }
 

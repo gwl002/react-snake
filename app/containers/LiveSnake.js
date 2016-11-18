@@ -5,12 +5,12 @@ import {moveForward,changeDir,toggleMove,reStart,becomeGameover} from "../action
 
 const mapStateToProps=(state)=>{
 	return {
-		snakeArr:state.snakeArr,
-		foodArr:state.foodArr,
-		speed:state.speed,
-		moving:state.moving,
-		direction:state.direction,
-		gameover:state.gameover
+		snakeArr:state.get("snakeArr"),
+		foodArr:state.get("foodArr"),
+		speed:state.get("speed"),
+		moving:state.get("moving"),
+		direction:state.get("direction"),
+		gameover:state.get("gameover")
 	}
 }
 

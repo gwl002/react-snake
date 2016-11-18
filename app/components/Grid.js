@@ -1,14 +1,15 @@
 import React,{PropTypes} from "react"
 import "./Grid.css"
 
-class Grid extends React.Component{
+
+class Grid extends React.PureComponent{
 	constructor(props){
-		super(props);
+		super(props)
 	}
 
-	shouldComponentUpdate(){
-		return false;
-	}
+	componentDidUpdate(){
+		console.log("grid updated!")
+	}	
 
 	render(){
 		let gridArr=[];

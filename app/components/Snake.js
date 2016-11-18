@@ -1,9 +1,14 @@
-import React,{PropTypes,Components} from "react"
+import React,{PropTypes} from "react"
 import Grid from "./Grid"
 import "./snake.css"
 
-const Snake=React.createClass({
-	handleKeyDown:function(e){
+class Snake extends React.PureComponent{
+	constructor(props){
+		super(props);
+		this.handleKeyDown=this.handleKeyDown.bind(this);
+	}
+
+	handleKeyDown(e){
 		switch(e.keyCode){
 			case 37:
 				if(this.props.direction!="RIGHT"&&this.props.moving){
@@ -29,15 +34,15 @@ const Snake=React.createClass({
 				if(!this.props.gameover){
 					if(this.props.moving){
 						this.props.toggleMove();
-						clearInterval(this.timer);
+						clearInterval(this.timer)
 					}else{
 						this.props.toggleMove();
-						this.timer=setInterval(this.props.move,this.props.speed);
+						this.timer=setInterval(this.props.move,this.props.speed)
 					}
 				}
 				break;
 			case 82: 
-				if(this.timer!==undefined){
+				if(this.timer ){
 					clearInterval(this.timer);
 				}
 				this.props.reStart();
@@ -45,70 +50,65 @@ const Snake=React.createClass({
 			default:
 				break;
 		}
-	},
+	}
 
-	componentDidMount:function(){
+	componentDidMount(){
 		window.addEventListener("keydown",this.handleKeyDown);
-	},
+	}
 
-	componentDidUpdate:function(){
-		console.log("snake UPDATE!")
-	},
-	
-	shouldComponentUpdate:function(nextProps,nextState){
+	shouldComponentUpdate(nextProps,nextState){
 		let snakeArr=nextProps.snakeArr;
-		let snakeBody=snakeArr.slice(0,snakeArr.length-1);
-		let head=snakeArr[snakeArr.length-1];
-		let eatSelf=snakeBody.filter((item)=>{return item.x==head.x&&item.y==head.y}).length>0?true:false
-		// if(nextProps.gameover){
-		// 	return false;
-		// }
-		if(head.x>19||head.x<0||head.y>19||head.y<0||eatSelf){
+		let snakeBody=snakeArr.slice(0,-1);
+		let head=snakeArr.last();
+		let eatSelf=snakeBody.filter((item)=>{return item.equals(head)}).size>0?true:false
+		if(nextProps.gameover){
+			return false;
+		}
+		if(head.get("x")>19||head.get("x")<0||head.get("y")>19||head.get("y")<0||eatSelf){
 			clearInterval(this.timer);
 			this.props.becomeGameover();
 			return false;
 		}else{
 			return true;
 		}
-	},
+	}
 
-	componentWillUnmount:function(){
+	componentWillUnmount(){
 		window.removeEventListener("keydown",this.handleKeyDown);
 		if(this.timer!==undefined){
 			clearInterval(this.timer);
 		}
 		
-	},
+	}
 
-	render:function(){
+	render(){
+		let foodArr=this.props.foodArr;
+		let foodStyle={left:foodArr.get("x")*20,top:foodArr.get("y")*20}
 		return  (
 			<div className="snake" >
 				<Grid cols={20} rows={20} />
 				<div>
-				{this.props.snakeArr.map((pos,index)=>(
-					<span className="snake-body" key={pos.x+"-"+pos.y} style={{left:pos.x*20,top:pos.y*20}}></span>
-					))}
+					{this.props.snakeArr.map((pos,index)=>(
+						<span className="snake-body" key={pos.get("x")+"-"+pos.get("y")} style={{left:pos.get("x")*20,top:pos.get("y")*20}}></span>
+						))}
 				</div>
-				{this.props.foodArr.map((pos,index)=>(
-					<span className="snake-food" key={index} style={{left:pos.x*20,top:pos.y*20}}></span>
-					))}
+				<span className="snake-food"  style={foodStyle}></span>
 			</div>
 		)
 	}
-})
-
-
-Snake.propTypes={
-	direction:PropTypes.string.isRequired,
-	snakeArr:PropTypes.array.isRequired,
-	foodArr:PropTypes.array.isRequired,
-	speed:PropTypes.number.isRequired,
-	gameover:PropTypes.bool.isRequired,
-	move:PropTypes.func.isRequired,
-	changeDir:PropTypes.func.isRequired,
-	toggleMove:PropTypes.func.isRequired,
-	reStart:PropTypes.func.isRequired,
-	becomeGameover:PropTypes.func.isRequired
 }
+
+// Snake.propTypes={
+// 	direction:PropTypes.string.isRequired,
+// 	snakeArr:PropTypes.array.isRequired,
+// 	foodArr:PropTypes.array.isRequired,
+// 	speed:PropTypes.number.isRequired,
+// 	gameover:PropTypes.bool.isRequired,
+// 	move:PropTypes.func.isRequired,
+// 	changeDir:PropTypes.func.isRequired,
+// 	toggleMove:PropTypes.func.isRequired,
+// 	reStart:PropTypes.func.isRequired,
+// 	becomeGameover:PropTypes.func.isRequired
+// }
 
 export default Snake

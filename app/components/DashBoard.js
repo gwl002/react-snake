@@ -1,13 +1,18 @@
 import React,{PropTypes} from "react"
 import "./DashBoard.css"
 
-const DashBoard=React.createClass({
-	handleChange:function(e){
+class DashBoard extends React.PureComponent{
+	constructor(props){
+		super(props);
+		this.handleChange=this.handleChange.bind(this);
+	}
+
+	handleChange(e){
 		e.target.blur();//使select失去焦点，否则会跟随按键改变select值
 		this.props.changeSpeed(parseInt(e.target.value));
-	},
+	}
 
-	render:function(){
+	render(){
 		let gameState;
 		if(this.props.gameover){
 			gameState="游戏结束"
@@ -34,7 +39,8 @@ const DashBoard=React.createClass({
 			</div>
 		)
 	}
-})
+}
+
 
 DashBoard.propTypes={
 	score:PropTypes.number.isRequired,
